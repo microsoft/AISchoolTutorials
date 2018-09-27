@@ -1,0 +1,6 @@
+.DS_Store
+.vscode/
+.vs/
+bin/
+obj/
+packages/

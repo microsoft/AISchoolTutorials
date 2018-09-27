@@ -1,5 +1,15 @@
 
-# Contributing
+# AI School Tutorials
+
+This repository contains a collection of AI tutorials that are featured on [Microsoft AI School](https://aischool.microsoft.com).
+
+## [Sketch2Code](./sketch2code)
+See how Azure Custom Vision can create a model that takes a hand drawn wireframe and turns it into valid HTML code.
+
+## [JFK Files](./jfkfiles)
+Apply Azure Cognitive Search to the goverment released JFK Files to see what secrets you can unlock.
+
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
