@@ -7,7 +7,7 @@ This repository contains a collection of AI tutorials that are featured on [Micr
 See how Azure Custom Vision can create a model that takes a hand drawn wireframe and turns it into valid HTML code.
 
 ## [JFK Files](./jfkfiles)
-Apply Azure Cognitive Search to the goverment released JFK Files to see what secrets you can unlock.
+Apply Azure Cognitive Search to the government released JFK Files to see what secrets you can unlock.
 
 ## Contributing
 
