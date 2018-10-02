@@ -42,7 +42,7 @@ namespace Import
                 .SelectMany(i => i.Tags
                     .Select(t => t.TagName))
                 .Distinct()
-                .Where(t => !existingTags.Any(e => e.Name == t));
+                .Where(t => !existingTags.Any(e => string.Compare(e.Name, t, ignoreCase: true)));
             if (tagsToImport.Any()) 
             {
                 foreach (var tag in tagsToImport) 

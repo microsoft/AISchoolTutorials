@@ -51,8 +51,6 @@ namespace Sketch2Code.Api
                 await objectDetector.SaveResults(content.DrawRectangle(result), correlationID, "predicted.png");
                 byte[] jsonContent = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result));
                 await objectDetector.SaveResults(jsonContent, correlationID, "results.json");
-                var groupBox = await objectDetector.CreateGroupBoxAsync(result);
-                await objectDetector.SaveResults(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(groupBox)), correlationID, "groups.json");
             }
 
             return req.CreateResponse(HttpStatusCode.OK, correlationID);
