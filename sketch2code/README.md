@@ -17,7 +17,7 @@ The Sketch2Code solution is made up of the following components:
 -	A Microsoft Computer Vision Service: Provides OCR character recognition capabilites that can turn handwritten images into digital text.
 -	An Azure Blob Storage: All steps involved in the HTML generation process are stored, including the original image, prediction results, and layout grouping information.
 -	An Azure Function: Serves as the backend entry point that coordinates the generation process by interacting with all the services.
--	An Azure web site: A frontend applicaation that enables the upload of a new design and outputs the generated HTML results.
+-	An Azure web site: A frontend application that enables the upload of a new design and outputs the generated HTML results.
 These components form the architecture as follows:
 ![Sketch2Code Architecture](./images/architecture.png)
 
