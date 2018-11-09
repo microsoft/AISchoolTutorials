@@ -761,6 +761,7 @@ The Azure Content Moderator API is a cognitive service that checks text, image, 
 
 1. Make sure you have saved all changes and start the application.
 1. Search for an image of racy content online. An example of this could be someone wearing a bathing suit.
+1. Take a snip of the image.
 1. In the snip insights UI, try to send the image via email by clicking the **share** icon.
 1. Watch the application call the `Content Moderator` API, detect the racy content and warn you about proceeding.
 1. Click stop on the toolbar within Visual Studio to stop debugging.
