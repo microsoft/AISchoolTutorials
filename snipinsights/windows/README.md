@@ -768,8 +768,7 @@ The Azure Content Moderator API is a cognitive service that checks text, image, 
 
     > NOTE: You can place a breakpoint in the code at any of the API calls to inspect the raw results.
 
-
-End of Lab
+By implementing a range of Azure Cognitive Services, we are easily able to extend our applications to consume AI functionality via simple REST calls. Snip Insights shows how these services can work together to enhance the capability of a solution with minimal effort compared to traditional AI implementations. 
 
 ## Licenses
 
