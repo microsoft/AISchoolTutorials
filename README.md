@@ -10,7 +10,7 @@ See how Azure Custom Vision can create a model that takes a hand drawn wireframe
 Apply Azure Cognitive Search to the government released JFK Files to see what secrets you can unlock.
 
 ## [Snip Insights](./snipinsights)
-Apply Azure Cognitive services to gain intelligent insights within a screen capture application.
+Apply Azure Cognitive Services to gain intelligent insights within a screen capture application.
 
 ## Contributing
 
