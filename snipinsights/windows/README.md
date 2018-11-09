@@ -5,13 +5,14 @@ Snip Insights is an open source cross-platform AI tool for intelligent screen ca
 In this lab, we will be adding each service individually to observe how simple it is to consume just some of the many Cognitive Service Microsoft has to offer.
 
 <p align="center">
-  <img width="560" height="300" src="WindowsLab/docs/SnipInsights_Homepage-Carousel_580x326_V2b.gif">
+  <img width="560" height="300" src="./images/SnipInsights_Homepage-Carousel_580x326_V2b.gif">
 </p>
 
 ## Architecture
+<p align="center">
+  <img width="560" height="300" src="./images/SnipInsights_Content_Image.jpg">
+</p>
 
-![](WindowsLab/docs/SnipInsights_Content_Image.jpg?raw=true "image") 
- 
 
 ## Prerequisites
  * Universal Windows Platform (UWP)
@@ -161,7 +162,7 @@ Microsoft Translator API is a neural machine translation service that developers
 
 ### Getting Started
 
-1. Clone the Snip Insights Lab code from '[GitHub](https://github.com/Microsoft/AISchoolTutorials)';
+1. Clone the Snip Insights Lab code from [GitHub](https://github.com/Microsoft/AISchoolTutorials)
 1. Open `snipinsights/windows/Snipinsights.WPF.sln` and let Visual Studio prepare the solution.
 
 ### Add Generated Keys to the project
