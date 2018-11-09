@@ -5,12 +5,12 @@ Snip Insights is an open source cross-platform AI tool for intelligent screen ca
 In this lab, we will be adding each service individually to observe how simple it is to consume just some of the many Cognitive Service Microsoft has to offer.
 
 <p align="center">
-  <img width="560" height="300" src="./images/SnipInsights_Homepage-Carousel_580x326_V2b.gif">
+  <img width="560" height="300" src="./Images/SnipInsights_Homepage-Carousel_580x326_V2b.gif">
 </p>
 
 ## Architecture
 <p align="center">
-  <img width="560" height="300" src="./images/SnipInsights_Content_Image.jpg">
+  <img width="560" height="300" src="./Images/SnipInsights_Content_Image.jpg">
 </p>
 
 
