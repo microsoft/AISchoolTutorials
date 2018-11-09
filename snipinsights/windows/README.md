@@ -2,7 +2,7 @@
 
 Snip Insights is an open source cross-platform AI tool for intelligent screen capture. This solution leverages Microsoft Azure's Cognitive Services APIs to increase users' productivity by reducing the number of steps needed to gain intelligent insights. 
 
-In this lab, we will be adding each service individually to observe how simple it is to consume just some of the many Cognitive Service Microsoft has to offer.
+In this lab, we will be adding each service individually to observe how simple it is to consume just some of the many Cognitive Services Microsoft has to offer.
 
 <p align="center">
   <img width="560" height="300" src="./Images/SnipInsights_Homepage-Carousel_580x326_V2b.gif">
