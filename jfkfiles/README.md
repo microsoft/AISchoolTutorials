@@ -254,6 +254,7 @@ if (requestRecords == null)
 ```
 8. Add the following code at the end of the method, this will process all the records and put the results in the output:
 ```
+CryptonymLinker cryptonymLinker = new CryptonymLinker(executionContext.FunctionAppDirectory);
 // Process each record and set the cryptonym to the output if found
 WebApiSkillResponse response = WebApiSkillHelpers.ProcessRequestRecords(skillName, requestRecords,
     (inRecord, outRecord) => {
