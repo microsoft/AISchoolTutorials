@@ -6,11 +6,12 @@ This repository contains a collection of AI tutorials that are featured on [Micr
 ## [Sketch2Code](./sketch2code)
 See how Azure Custom Vision can create a model that takes a hand drawn wireframe and turns it into valid HTML code.
 
-## [JFK Files](./jfkfiles)
-Apply Azure Cognitive Search to the government released JFK Files to see what secrets you can unlock.
-
 ## [Snip Insights](./snipinsights)
 Apply Azure Cognitive Services to gain intelligent insights within a screen capture application.
+
+## Other Labs
+
+You can find other AI Labs in this [Github repo](https://github.com/Microsoft/ailab).
 
 ## Contributing
 
