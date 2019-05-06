@@ -1,0 +1,23 @@
+name: storytelling
+channels:
+  - conda-forge
+dependencies:
+  - python=3.5
+  - pygpu=0.7.6
+  - mkl-service
+  - pip:
+    - forbiddenfruit 
+    - azureml-defaults
+    - scipy
+    - nltk
+    - sklearn
+    - Cython
+    - theano==1.0.2
+    - nose
+    - https://github.com/Lasagne/Lasagne/archive/master.zip
+    - scikit-image
+    - Pillow
+    - azureml-sdk
+    - gensim
+    - opencv-python==3.3.0.9
+    - scrapy==1.6.0

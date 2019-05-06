@@ -1,0 +1,2 @@
+Generated models and dependencies go here.
+> Note: if you want to re-run the training you should remove the generated artifacts from the previous run. Execute the `models/clean.sh` script before running the training again.
