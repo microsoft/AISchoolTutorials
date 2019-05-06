@@ -1,0 +1,1 @@
+Get training data from books using scrapy
