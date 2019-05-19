@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01.IntroductionToMLNET", "01.IntroductionToMLNET\01.IntroductionToMLNET.csproj", "{E6F1BC73-776D-4F94-A453-D97E4BD523BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02.LinearRegression", "02.LinearRegression\02.LinearRegression.csproj", "{D47684C4-0ECD-4F88-9313-A082CCF0DD06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03.MultipleLinearRegression", "03.MultipleLinearRegression\03.MultipleLinearRegression.csproj", "{2B3E2B4C-45EC-4C12-A07C-B11847ADCFEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04.PolynomialRegression", "04.PolynomialRegression\04.PolynomialRegression.csproj", "{5ADDB80E-642B-446C-AB95-7C4DE155CC5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.LogisticRegression", "05.LogisticRegression\05.LogisticRegression.csproj", "{CED180A6-0F2D-40C6-9C00-7E4685A7C454}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "06.SupportVectorMachines", "06.SupportVectorMachines\06.SupportVectorMachines.csproj", "{059FE0B9-AD97-48F8-A619-90CE92CEB8D3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6F1BC73-776D-4F94-A453-D97E4BD523BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F1BC73-776D-4F94-A453-D97E4BD523BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F1BC73-776D-4F94-A453-D97E4BD523BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F1BC73-776D-4F94-A453-D97E4BD523BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D47684C4-0ECD-4F88-9313-A082CCF0DD06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D47684C4-0ECD-4F88-9313-A082CCF0DD06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D47684C4-0ECD-4F88-9313-A082CCF0DD06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D47684C4-0ECD-4F88-9313-A082CCF0DD06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3E2B4C-45EC-4C12-A07C-B11847ADCFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3E2B4C-45EC-4C12-A07C-B11847ADCFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3E2B4C-45EC-4C12-A07C-B11847ADCFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3E2B4C-45EC-4C12-A07C-B11847ADCFEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ADDB80E-642B-446C-AB95-7C4DE155CC5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ADDB80E-642B-446C-AB95-7C4DE155CC5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ADDB80E-642B-446C-AB95-7C4DE155CC5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ADDB80E-642B-446C-AB95-7C4DE155CC5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CED180A6-0F2D-40C6-9C00-7E4685A7C454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CED180A6-0F2D-40C6-9C00-7E4685A7C454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CED180A6-0F2D-40C6-9C00-7E4685A7C454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CED180A6-0F2D-40C6-9C00-7E4685A7C454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{059FE0B9-AD97-48F8-A619-90CE92CEB8D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{059FE0B9-AD97-48F8-A619-90CE92CEB8D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{059FE0B9-AD97-48F8-A619-90CE92CEB8D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{059FE0B9-AD97-48F8-A619-90CE92CEB8D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D565773-8567-46DB-B5AA-8B433BE3BC76}
+	EndGlobalSection
+EndGlobal

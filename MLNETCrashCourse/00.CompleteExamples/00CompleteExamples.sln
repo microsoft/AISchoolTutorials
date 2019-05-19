@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.LogisticRegression", "05.LogisticRegression\05.LogisticRegression.csproj", "{D0379629-070A-4F6E-9638-47692C4DD8DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "myMLNET.Common", "..\Common\myMLNET.Common.csproj", "{0226349D-00B3-4E02-855C-D3A460E9E2FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01.IntroductionToMLNET", "01.IntroductionToMLNET\01.IntroductionToMLNET.csproj", "{05134DFA-19E2-4EBC-83B4-84296FE11197}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02.LinearRegression", "02.LinearRegression\02.LinearRegression.csproj", "{EEFAD2D1-83D1-443B-882E-ED8CB6D5E721}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03.MultipleLinearRegression", "03.MultipleLinearRegression\03.MultipleLinearRegression.csproj", "{AF968C7B-CBF8-47CB-9D66-A019BB00EDBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04.PolynomialRegression", "04.PolynomialRegression\04.PolynomialRegression.csproj", "{7F418EB9-2DB2-48CE-9434-A66B40F36A4A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "06.SupportVectorMachines", "06.SupportVectorMachines\06.SupportVectorMachines.csproj", "{46B6CA64-650E-4F67-8A15-A86C734D04E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0379629-070A-4F6E-9638-47692C4DD8DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0379629-070A-4F6E-9638-47692C4DD8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0379629-070A-4F6E-9638-47692C4DD8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0379629-070A-4F6E-9638-47692C4DD8DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0226349D-00B3-4E02-855C-D3A460E9E2FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0226349D-00B3-4E02-855C-D3A460E9E2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0226349D-00B3-4E02-855C-D3A460E9E2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0226349D-00B3-4E02-855C-D3A460E9E2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05134DFA-19E2-4EBC-83B4-84296FE11197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05134DFA-19E2-4EBC-83B4-84296FE11197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05134DFA-19E2-4EBC-83B4-84296FE11197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05134DFA-19E2-4EBC-83B4-84296FE11197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEFAD2D1-83D1-443B-882E-ED8CB6D5E721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEFAD2D1-83D1-443B-882E-ED8CB6D5E721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEFAD2D1-83D1-443B-882E-ED8CB6D5E721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEFAD2D1-83D1-443B-882E-ED8CB6D5E721}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF968C7B-CBF8-47CB-9D66-A019BB00EDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF968C7B-CBF8-47CB-9D66-A019BB00EDBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF968C7B-CBF8-47CB-9D66-A019BB00EDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF968C7B-CBF8-47CB-9D66-A019BB00EDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F418EB9-2DB2-48CE-9434-A66B40F36A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F418EB9-2DB2-48CE-9434-A66B40F36A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F418EB9-2DB2-48CE-9434-A66B40F36A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F418EB9-2DB2-48CE-9434-A66B40F36A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46B6CA64-650E-4F67-8A15-A86C734D04E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46B6CA64-650E-4F67-8A15-A86C734D04E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46B6CA64-650E-4F67-8A15-A86C734D04E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46B6CA64-650E-4F67-8A15-A86C734D04E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1688EB5-4F97-4C4B-90B0-44ED8A2E4CDB}
+	EndGlobalSection
+EndGlobal
