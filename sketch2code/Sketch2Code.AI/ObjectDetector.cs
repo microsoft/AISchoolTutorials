@@ -1,22 +1,21 @@
-﻿using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models;
-using Microsoft.ProjectOxford.Vision;
-using Microsoft.ProjectOxford.Vision.Contract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Sketch2Code.AI.Entities;
 
 namespace Sketch2Code.AI
 {
     public class ObjectDetector : CustomVisionClient
     {
+        private const int numberOfCharsInOperationId = 36;
 
         public ObjectDetector()
-            : base(ConfigurationManager.AppSettings["ObjectDetectionTrainingKey"],
-                   ConfigurationManager.AppSettings["ObjectDetectionPredictionKey"],
+            : base(ConfigurationManager.AppSettings["ObjectDetectionApiKey"],
+                   ConfigurationManager.AppSettings["ObjectDetectionPublishedModelName"],
                    ConfigurationManager.AppSettings["ObjectDetectionProjectName"])
         {
         }
@@ -27,69 +26,60 @@ namespace Sketch2Code.AI
 
         }
 
-        public async Task<ImagePrediction> GetDetectedObjects(byte[] image)
+        public async Task<PredictionResult> GetDetectedObjects(byte[] image)
         {
-            throw new NotImplementedException();
+            return await PredictImageAsync(image);
         }
 
         public async Task<List<String>> GetText(byte[] image)
         {
             var list = new List<String>();
-            try
+            var lines = await GetTextLines(image);
+
+            if (lines != null)
             {
-                using (var ms = new MemoryStream(image))
-                {
-                    var operation = await _visionClient.CreateHandwritingRecognitionOperationAsync(ms);
-                    var result = await _visionClient.GetHandwritingRecognitionOperationResultAsync(operation);
-
-                    while (result.Status != Microsoft.ProjectOxford.Vision.Contract.HandwritingRecognitionOperationStatus.Succeeded)
-                    {
-                        if (result.Status == Microsoft.ProjectOxford.Vision.Contract.HandwritingRecognitionOperationStatus.Failed)
-                            return new List<string>(new string[] { "Text prediction failed" });
-
-                        await Task.Delay(Convert.ToInt32(ConfigurationManager.AppSettings["ComputerVisionDelay"]));
-
-                        result = await _visionClient.GetHandwritingRecognitionOperationResultAsync(operation);
-                    }
-                    list = result.RecognitionResult.Lines.SelectMany(l => l.Words?.Select(w => w.Text)).ToList();
-                }
+                list = lines.SelectMany(l => l.Words?.Select(w => w.Text)).ToList();
             }
-            catch (ClientException ex)
-            {
-                list.Add($"Text prediction failed: {ex.Error.Message}. Id: {ex.Error.Code}.");
-            }
+            
             return list;
         }
 
-        public async Task<HandwritingTextLine[]> GetTextRecognition(byte[] image)
+        public async Task<List<Line>> GetTextLines(byte[] image)
         {
             try
             {
                 using (var ms = new MemoryStream(image))
                 {
-                    var operation = await _visionClient.CreateHandwritingRecognitionOperationAsync(ms);
-                    var result = await _visionClient.GetHandwritingRecognitionOperationResultAsync(operation);
+                    var operation = await _visionClient.BatchReadFileInStreamWithHttpMessagesAsync(ms);
+                    var operationLocation = operation.Headers.OperationLocation;
 
-                    while (result.Status != Microsoft.ProjectOxford.Vision.Contract.HandwritingRecognitionOperationStatus.Succeeded)
+                    // Retrieve the URI where the recognized text will be
+                    // stored from the Operation-Location header
+                    string operationId = operationLocation.Substring(operationLocation.Length - numberOfCharsInOperationId);
+
+                    var result = await _visionClient.GetReadOperationResultWithHttpMessagesAsync(operationId);
+
+                    // Wait for the operation to complete
+                    int i = 0;
+                    while ((result.Body.Status == TextOperationStatusCodes.Running ||
+                            result.Body.Status == TextOperationStatusCodes.NotStarted) && i++ < MaxRetries)
                     {
-                        if (result.Status == Microsoft.ProjectOxford.Vision.Contract.HandwritingRecognitionOperationStatus.Failed)
-                        {
-                            return null;
-                        }
-
+                        Console.WriteLine("Server status: {0}, waiting {1} seconds...", result.Body.Status, i);
                         await Task.Delay(Convert.ToInt32(ConfigurationManager.AppSettings["ComputerVisionDelay"]));
-                        result = await _visionClient.GetHandwritingRecognitionOperationResultAsync(operation);
+
+                        result = await _visionClient.GetReadOperationResultWithHttpMessagesAsync(operationId);
                     }
 
-                    return result.RecognitionResult.Lines;
-
+                    return result.Body.RecognitionResults.SelectMany(rs => rs.Lines).ToList();
                 }
             }
-            catch (ClientException ex)
+            catch (Exception)
             {
                 return null;
             }
         }
+
+
     }
 }
 

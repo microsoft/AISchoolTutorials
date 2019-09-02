@@ -1,100 +1,69 @@
-﻿
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
-using Microsoft.ProjectOxford.Vision;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Newtonsoft.Json;
+using Sketch2Code.AI.Entities;
 
 namespace Sketch2Code.AI
 {
     public abstract class CustomVisionClient
     {
-        protected string _trainingApiKey;
-        protected string _predictionApiKey;
-        private TrainingApi _trainingApi;
+        protected const int MaxRetries = 10;
+        protected const string CustomVisionEndpoint = "https://westus2.api.cognitive.microsoft.com";
+
+        // Shared instance: https://github.com/mspnp/performance-optimization/blob/master/ImproperInstantiation/docs/ImproperInstantiation.md
+        private static readonly HttpClient Client = new HttpClient { Timeout = TimeSpan.FromMinutes(1) };
+
+        protected string _apiKey;
+        protected string _publishedModelName;
         protected string _projectName;
-        protected Project _project;
-        protected Iteration _iteration;
-        protected VisionServiceClient _visionClient;
+        protected string _projectId;
+        protected ComputerVisionClient _visionClient;
 
-        public TrainingApi TrainingApi { get => _trainingApi;  }
-
-        public CustomVisionClient(string trainingKey, string predictionKey, string projectName)
+        public CustomVisionClient(string apiKey, string publishedModelName, string projectName)
         {
-            _trainingApiKey = trainingKey;
-            _predictionApiKey = predictionKey;
+            _apiKey = apiKey;
+            _publishedModelName = publishedModelName;
             _projectName = projectName;
-            this._trainingApi = new TrainingApi() { ApiKey = _trainingApiKey };
 
-            _visionClient = new VisionServiceClient(ConfigurationManager.AppSettings["HandwrittenTextSubscriptionKey"],
-                ConfigurationManager.AppSettings["HandwrittenTextApiEndpoint"]);
-        }
-        
-        protected async Task<Project> GetProjectAsync(string projectName)
-        {
-            if (String.IsNullOrWhiteSpace(projectName)) throw new ArgumentNullException("projectName");
-            var projects = await this._trainingApi.GetProjectsAsync();
-
-            return projects.SingleOrDefault(p => p.Name.Equals(projectName, StringComparison.InvariantCultureIgnoreCase));
+            // Initialize Computer Vision Client
+            
         }
 
         public virtual void Initialize()
         {
             if (String.IsNullOrWhiteSpace(_projectName)) throw new ArgumentNullException("projectName");
-            var projects = this._trainingApi.GetProjects();
 
-            this._project = projects.SingleOrDefault(p => p.Name.Equals(_projectName, StringComparison.InvariantCultureIgnoreCase));
+            var uri = $"{CustomVisionEndpoint}/customvision/v3.0/training/projects";
 
-            if (_project == null) throw new InvalidOperationException($"CustomVision client failed to initialize. ({_projectName} Not Found.)");
+            string responseContent;
+            using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, uri))
+            {
+                requestMessage.Headers.Add("Training-Key", _apiKey);
+                var response = Client.SendAsync(requestMessage).Result;
+                responseContent = response.Content.ReadAsStringAsync().Result;
+            }
 
+            var projects = JsonConvert.DeserializeObject<List<Project>>(responseContent);
 
-            SetDefaultIteration(ConfigurationManager.AppSettings["ObjectDetectionIterationName"]);
+            var project = projects.SingleOrDefault(p => p.Name.Equals(_projectName, StringComparison.InvariantCultureIgnoreCase));
+            
+            if (project == null) throw new InvalidOperationException($"CustomVision client failed to initialize. ({_projectName} Not Found.)");
+            this._projectId = project.Id;
         }
 
-        protected async Task<IList<Iteration>> GetIterations(string projectName)
+        public async Task<PredictionResult> PredictImageAsync(byte[] imageData)
         {
-            if (String.IsNullOrWhiteSpace(projectName)) throw new ArgumentNullException("projectName");
-
-            var prj = await this.GetProjectAsync(projectName);
-
-            var iterations = await this._trainingApi.GetIterationsAsync(prj.Id);
-
-            return iterations;
-        }
-
-        public virtual async Task SetDefaultIterationAsync(string iterationName)
-        {
-            if (_project == null) throw new InvalidOperationException("Project is null");
-
-            var iterations = await this._trainingApi.GetIterationsAsync(_project.Id);
-
-            var iteration = iterations.SingleOrDefault(i=>i.Name == iterationName);
-
-            if (iteration == null) throw new InvalidOperationException($"Iteration {iterationName} not found");
-
-            iteration.IsDefault = true;
-
-            await _trainingApi.UpdateIterationAsync(_project.Id, iteration.Id, iteration);
-        }
-
-        public virtual void SetDefaultIteration(string iterationName)
-        {
-            if (_project == null) throw new InvalidOperationException("Project is null");
-
-            var iterations = this._trainingApi.GetIterations(_project.Id);
-
-            var iteration = iterations.SingleOrDefault(i => i.Name == iterationName);
-
-            if (iteration == null) throw new InvalidOperationException($"Iteration {iterationName} not found");
-
-            iteration.IsDefault = true;
-
-            this._trainingApi.UpdateIteration(_project.Id, iteration.Id, iteration);
+            throw new NotImplementedException();
         }
     }
 }

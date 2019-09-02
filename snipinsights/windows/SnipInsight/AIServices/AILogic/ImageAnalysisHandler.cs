@@ -17,11 +17,9 @@ namespace SnipInsight.AIServices.AILogic
         /// <param name="client">Instance of HttpClient to be used for the API call</param>
         internal ImageAnalysisHandler(string key): base(key)
         {
-      Host = UserSettings.GetKey(key + "Endpoint", "westus.API.cognitive.microsoft.com/vision/v1.0");
-          Endpoint = "analyze";
-          RequestParams = "visualFeatures=Tags,Description&language=en&details=Celebrities,Landmarks";
+            //<add-endpoint-details-here>
 
-      BuildURI();
+            BuildURI();
         }
 
         protected override string GetDefaultKey()

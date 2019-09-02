@@ -14,7 +14,7 @@ The process of transformation is detailed as follows:
 ## Architecture
 The Sketch2Code solution is made up of the following components:
 -	A Microsoft Custom Vision Model: This model has been trained with images of different handwritten designs tagged with the information of common HTML elements such as buttons, text boxes and images.
--	A Microsoft Computer Vision Service: Provides OCR character recognition capabilites that can turn handwritten images into digital text.
+-	A Microsoft Computer Vision Service: Provides OCR character recognition capabilities that can turn handwritten images into digital text.
 -	An Azure Blob Storage: All steps involved in the HTML generation process are stored, including the original image, prediction results, and layout grouping information.
 -	An Azure Function: Serves as the backend entry point that coordinates the generation process by interacting with all the services.
 -	An Azure web site: A frontend application that enables the upload of a new design and outputs the generated HTML results.
@@ -53,6 +53,32 @@ To Download:
 1. Click **Clone or download** from this repo.
 1. You can clone the repo using git or click **Download ZIP** to directly download the code from your browser.
 
+### D) Create a Cognitive Services resource.
+
+We'll use an Azure Cognitive Service resource to access the Custom Vision and Computer Vision APIs.
+
+1. Log into the [Azure Portal](https://portal.azure.com)(portal.azure.com).
+1. Click **Create Resource [+]**  from the left menu and search for `Cognitive Services`.
+1. Select the first result and click the **Create** button.
+1. Provide the required information:
+
+    * Name: `sketch2code-vision-<your initials>`.
+    * Location `(US) West US 2`
+    * Pricing tier: `S0`.
+    * Create a new resource group: `sketch2code-<your initials>`.
+    * Check the `I confirm I have read and understood the notice below.`
+
+1. Click **Create** to create the resource and deploy it. This step might take a few minutes.
+1. Once the deployment is completed you will see a **Deployment succeeded** notification.
+1. Go to **All Resources** in the left pane and search for the new resource: `sketch2code-vision-<your initials>`.
+1. Click on the first result to open it.
+1. Click on the **Quick start** option from the menu.
+1. Copy the **Endpoint** value into **Notepad**.
+1. Copy the **Key 1** value into **Notepad**.
+
+1. Click **Create** to create the resource and deploy it. This step might take a few minutes.
+
+
 ## Introduction to the Azure Custom Vision Service
 
 ### A) Introduction to Azure Custom Vision
@@ -77,7 +103,7 @@ We'll start by creating a new Custom Vision object detection project:
 1. In your web browser, navigate to the [Custom Vision](https://customvision.ai/) web page. Select Sign in to begin using the service.
 1. To create your first project, select **New Project**. For your first project, you are asked to agree to the Terms of Service. Select the check box, and then select the I agree button. The New project dialog box appears.
 1. Enter a name and a description for the project. Then select `Object Detection` for the project type.
-1. Select a Resource Group. The Resource Group dropdown shows you all of your Azure Resource Groups that include a Custom Vision Service Resource. You can also create select limited trial. The limited trial entry is the only resource group a non-Azure user will be able to choose from.
+1. Select the Cognitive Service Resource previously created in Azure (`sketch2code-vision-<your initials>`).
 1. To create the project, select **Create project**.
 
 ### C) Tag an image
@@ -85,7 +111,7 @@ We'll start by creating a new Custom Vision object detection project:
 Next we'll use the Custom Vision web interface to tag images. In this section we are going to see how to manually tag an image, but later you'll also see how this can be done via the REST API.
 
 1. To add images to the classifier, use the **Add images** button.
-> Custom Vision Service accepts training images in .jpg, .png, and .bmp format, up to 6 MB per image. (Prediction images can be up to 4 MB per image.) We recommend that images be 256 pixels on the shortest edge. Any images shorter than 256 pixels on the shortest edge are scaled up by Custom Vision Service.
+    > **Note:** Custom Vision Service accepts training images in .jpg, .png, and .bmp format, up to 6 MB per image. (Prediction images can be up to 4 MB per image.) We recommend that images be 256 pixels on the shortest edge. Any images shorter than 256 pixels on the shortest edge are scaled up by Custom Vision Service.
 
 1. Browse for the file `sample.png` inside the `model` folder of the downloaded repository files and select `Open` to move to tagging.
 1. Click the `Upload 1 file` button.
@@ -103,13 +129,15 @@ The more images you include in your training set, the better your model will per
 
 ### A) Upload the full training set
 
-1. Open **Visual Studio 2017** from the Start Menu.
+1. Open **Visual Studio 2019** from the Start Menu.
 1. Click **Open Project/Solution** from the **File > Open** menu.
 1. Select the solution file `Sketch2Code\Sketch2Code.sln` and wait for it to load.
+  > **Note:** If you get compilation errors right click the solution and select *Rebuild Solution*.
+
 1. Take a look at the `Import` project.
 1. Return to **Microsoft Edge** and the [Custom Vision](https://customvision.ai) (customvision.ai) portal.
 1. Click on the **settings** icon in the top right corner of portal.
-1. Copy the **Training Key** located under the *Accounts* section.
+1. Copy the **Key** located under the **Resources** section.
 1. Return to **Visual Studio**.
 1. Open the **Program.cs** file in the **Import** project.
 1. Find the `string trainingKey = "";` code around line 19 and set the value with the copied key value.
@@ -129,6 +157,7 @@ Now that our data set is available, and each image correctly tagged, the trainin
 1. Return to **Microsoft Edge** and the [Custom Vision](https://customvision.ai) (customvision.ai) portal.
 1. Select the object detection project you created earlier.
 1. Click on the green **Train** button in the top navigation bar.
+1. Click on **Train** using the default fast training option.
 1. Wait for the training to complete. The process should take around 2 to 3 minutes.
 
 ### C) Review model performance
@@ -138,7 +167,7 @@ Now that our data set is available, and each image correctly tagged, the trainin
 
 ### D) Test the model
 
-The portal provides a test page for us to do a basic smoke test of our model with some new, unseen data. In a production scenario, the RESTful API can provide a more convienent mechanism for doing automated predictions.
+The portal provides a test page for us to do a basic smoke test of our model with some new, unseen data. In a production scenario, the RESTful API can provide a more convenient mechanism for doing automated predictions.
 
 1. Click on the **Quick Test** button in the top navigation bar.
 1. Click the **Browse local files** button.
@@ -159,41 +188,52 @@ In this section we will see how to code a solution to make predictions using the
 1. Return to **Microsoft Edge** and the [Custom Vision](https://customvision.ai) (customvision.ai) portal.
 1. Select the object detection project you created earlier.
 1. Click on the **settings** icon in the top right corner of portal.
-1. Copy the **Training Key** located under the *Accounts* section.
-1. Copy the **Prediction Key** located under the *Accounts* section.
 1. Copy the **Project Name** located under the *Project Settings* section.
 1. Click on the `Performance` option in the menu.
-1. Copy the **Iteration name** of the `Default` iteration in the left area, usually `Iteration 1`.
-1. Return to **Visual Studio** and open the **local.settings.json** in the root of the `Sketch2Code.Api` project.
-1. Find the following content: 
+1. Click on `Publish` to make your model accessible to the Prediction API.
+  * Copy the **Model name** of the iteration that we are going to publish, usually `Iteration1`.
+  * **Prediction resource**: Select the previously created Cognitive Service resource.
+  * Click on `Publish`. 
+1. Return to **Visual Studio**.
+1. Right click the `Sketch2Code.Api` project and click on the `Add | New Item` option in the menu.
+1. Select the `JavaScript JSON Configuration File` type, enter the name `local.settings.json` and click the `Add` button.
+1. Replace all the content in the file with the following content:
     ```json
-    "ObjectDetectionTrainingKey": "CustomVisionTrainingKey",
-    "ObjectDetectionPredictionKey": "CustomVisionPredictionKey",
+    {
+      "IsEncrypted": false,
+      "Values": {
+          "ObjectDetectionApiKey": "CognitiveServiceKey",
+          "ObjectDetectionProjectName": "CustomVisionProjectName",
+          "ObjectDetectionPublishedModelName": "ObjectDetectionPublishedModelName",
+          "AzureWebJobsStorage": "AzureWebJobsStorage"
+      }
+    }
+    ```
+1. Find the following content:
+    ```json
+    "ObjectDetectionApiKey": "CognitiveServiceKey",
     "ObjectDetectionProjectName": "CustomVisionProjectName",
-    "ObjectDetectionIterationName": "CustomVisionIterationName",
+    "ObjectDetectionPublishedModelName": "ObjectDetectionPublishedModelName",
     ```
 1. Replace the values for each property with what you copied before from the portal.
 
-### B) Register for access to the Computer Vision API
+### B) Configure the Computer Vision client
 
-A Microsoft _Computer_ Vision Service is needed to perform handwritten character recognition. Computer Vision services require special subscription keys. Every call to the Computer Vision API requires a subscription key. This key needs to be either passed through a query string parameter or specified in the request header.
+A Microsoft Computer Vision Service is needed to perform handwritten character recognition. Every call to the Computer Vision API requires a subscription key. This key needs to be either passed through a query string parameter or specified in the request header. We'll use the **Cognitive Services** unified resource previously created to access Computer Vision.
 
-1. Go to **Microsoft Edge**.
-1. In a new tab, navigate to the [Try Azure App Service](https://azure.microsoft.com/en-us/try/cognitive-services/) portal (https://azure.microsoft.com/en-us/try/cognitive-services/).
-1. Select the **Vision APIs** tab if it is not selected.
-1. Find **Computer Vision** in the list and click the related **Get API Key** button.
-1. Select the **Guest** option by clicking the **Get started** button.
-1. Aggre with the terms by checking the box and click the **Next** button.
-1. **SIGN IN** using your Microsoft account.
-1. Check your APIs subscriptions and find the **Computer Vision** option and copy the first **Endpoint** and **Key 1** values.
-1. Return to **Visual Studio** and open the **local.settings.json** in the root of the `Sketch2Code.Api` project.
-1. Find the following content:
-    ```json
-    "HandwrittenTextSubscriptionKey": "ComputerVisionKey",
-    "HandwrittenTextApiEndpoint": "ComputerVisionEndpoint",
+1. Find the following comment in the **CustomVisionClient.cs** constructor:
     ```
-1. Replace **ComputerVisionKey** with the value you copied from the API website as the **Key 1**.
-1. Replace **ComputerVisionEndpoint** with the value you copied from the API website as the **Endpoint**.
+    // Initialize Computer Vision client
+    ```
+1. Paste the following code snippet to initialize the Computer Vision client:
+
+  ```
+  _visionClient = new ComputerVisionClient(
+      new ApiKeyServiceClientCredentials(apiKey),
+      new System.Net.Http.DelegatingHandler[] { });
+
+  _visionClient.Endpoint = CustomVisionEndpoint;
+  ```
 
 ### C) Create an Azure Blob Storage account
 
@@ -202,7 +242,6 @@ An Azure Blob Storage account is used to store all the intermediary steps of the
   ⋅* Original.png: The original image uploaded by the user.
   ⋅* slices: Contains the cropped images used for text prediction.
   ⋅* results.json: Results from the prediction process run against the original image.
-  ⋅* groups.json: Results from the layout algorithm containing the spatial distribution of predicted objects.
 
 1. Go to **Microsoft Edge**.
 1. In a new tab, navigate to the [Azure Portal](https://portal.azure.com/) (https://portal.azure.com/).
@@ -210,10 +249,12 @@ An Azure Blob Storage account is used to store all the intermediary steps of the
 1. Search for **Storage account** and select the `Storage account - blob, file, table, queue` option.
 1. Click the **Create** button.
 1. Enter all the required information:
-  - **Name**: Sketch2Sketch2CodeBlobStorage
+  - **Name**: sketch2codeblobstorage<your initials>
   - **Account kind**: Blob storage
   - **Subscription**: Pay-As-You-Go
-  - **Resource group**: Create or select a desired group.
+  - **Resource group**: * Select the resource group previously created (`sketch2code-<your initials>`)
+  - **Replication**: Locally-redundant storage (LRS)
+1. Click the **Review + create** button.
 1. Click the **Create** button and wait for the resource to be created.
 1. When the resource is created go to the detail view by clicking the name in the notification or by searching the created resource by name in the `All resources` option.
 1. Click in the **Access keys** option in the left menu of the resource.
@@ -229,25 +270,32 @@ An Azure Blob Storage account is used to store all the intermediary steps of the
 
 In this section we are going to take a look inside the code and wire up the orchestrator service to the custom vision prediction REST api.
 
-1. Go back to **Visual Studio 2017** from the Start Menu.
+1. Go back to **Visual Studio 2019** from the Start Menu.
 1. Take a look to the `Sketch2Code.AI` project.
-1. Open the `ObjectDetector.cs` file.
+1. Open the `CustomVisionClient.cs` file.
 1. Find the following method:
 ```cs
-public async Task<ImagePrediction> GetDetectedObjects(byte[] image)
+public async Task<PredictionResult> PredictImageAsync(byte[] imageData)
 {
     throw new NotImplementedException();
 }
 ```
 1. Replace the body of the method with the following code:
   ```cs
-  using (var endpoint = new PredictionEndpoint() { ApiKey = this._predictionApiKey })
+  // Prediction URL
+  string url = $"{CustomVisionEndpoint}/customvision/v3.0/Prediction/{_projectId}/detect/iterations/{_publishedModelName}/image";
+
+  string responseContent;
+  using (var content = new ByteArrayContent(imageData))
   {
-      using (var ms = new MemoryStream(image))
-      {
-          return await endpoint.PredictImageAsync(this._project.Id, ms);
-      }
+      content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+      content.Headers.Add("Prediction-Key", _apiKey);
+      var response = await Client.PostAsync(url, content);
+      response.EnsureSuccessStatusCode();
+      responseContent = await response.Content.ReadAsStringAsync();
   }
+
+  return JsonConvert.DeserializeObject<PredictionResult>(responseContent);
   ```
   > The code is calling the API endpoint that returns predictions for the object locations of an input image. More references about the API endpoint can be found [here](https://southcentralus.dev.cognitive.microsoft.com/docs/services/450e4ba4d72542e889d93fd7b8e960de/operations/5a6264bc40d86a0ef8b2c290).
 1. Take a look at the `Sketch2Code.Core` project.
@@ -263,11 +311,11 @@ public async Task<IList<PredictedObject>> GetPredictionAsync(byte[] data)
   ```cs
   var list = new List<PredictedObject>();
 
-  Image image = buildAndVerifyImage(data);
+  var image = buildAndVerifyImage(data);
 
-  ImagePrediction prediction = await _detectorClient.GetDetectedObjects(data);
+  var prediction = await _detectorClient.GetDetectedObjects(data);
 
-  HandwritingTextLine[] result = await this._detectorClient.GetTextRecognition(data);
+  var result = await this._detectorClient.GetTextLines(data);
 
   if (prediction != null)
   {
@@ -288,7 +336,7 @@ public async Task<IList<PredictedObject>> GetPredictionAsync(byte[] data)
           {
               foreach (var predictedObject in list)
               {
-                  assignPredictedText2(predictedObject, result);
+                  assignPredictedText(predictedObject, result);
               }
           }
       }
@@ -327,7 +375,6 @@ Lets try the function with all the updated code.
 1. Check the `BLOB CONTAINERS` and click the one created.
 1. In the right panel you should see all the created files by the function:
   - slices (folder)
-  - groups.json
   - original.png
   - predicted.png
   - results.json
@@ -344,24 +391,24 @@ In this section we will see how to setup the app that generates HTML from the mo
 
 1. Return to **Visual Studio** and open the **Web.config** file in the root of the `Sketch2Code.Web` project.
 1. Find the `appSettings` section in the file.
-1. Replace all the following values with the same values from the  **local.settings.json** file inside the **Sketch2Code.Api** project that you set before.
-  - ObjectDetectionTrainingKeyValue = ObjectDetectionTrainingKey
-  - ObjectDetectionPredictionKeyValue = ObjectDetectionPredictionKey
-  - ObjectDetectionProjectNameValue = ObjectDetectionProjectName
-  - ObjectDetectionIterationNameValue = ObjectDetectionIterationName
-  - HandwrittenTextSubscriptionKeyValue = HandwrittenTextSubscriptionKey
-  - HandwrittenTextApiEndpointValue = HandwrittenTextApiEndpoint
+1. Replace all the following values with the same values from the  **local.settings.json** file inside the **Sketch2Code.Api** project that you set before:
+  - ObjectDetectionApiKey = CognitiveServiceKey
+  - ObjectDetectionProjectNameValue = CustomVisionProjectName
+  - ObjectDetectionPublishedModelName = ObjectDetectionPublishedModelName
   - AzureWebJobsStorageValue = AzureWebJobsStorage
 1. Make sure that the `Sketch2CodeAppFunctionEndPoint` property has the correct function endpoint URL that you use before to call the function.
 1. Now we need to set the value for the `storageUrl` key. Go back to the [Azure Portal](https://portal.azure.com/) (https://portal.azure.com/) in Edge and find the created Blob Storage resource.
-1. Confirm the name of the resource and set the value using it all in lowercase of the setting to be: https://RESOURCENAME.blob.core.windows.net. It should be something like https://sketch2sketch2codeblobstorage.blob.core.windows.net
+1. Confirm the name of the resource and set the value using it all in lowercase of the setting to be: https://RESOURCENAME.blob.core.windows.net. It should be something like https://sketch2codeblobstorage<your initials>.blob.core.windows.net
 
 
 ### B) Run the app
 
 Lets try it!
 
-1. Select the `Sketch2Code.Web` program in Visual Studio at the top and click the green button to start the app.
+1. Click on **Debug -> Delete All Breakpoints** from Visual Studio menu.
+1. Right click the `Sketch2Code.Web` project and select **Debug -> Start new instance**.
+  > **Note:** Make sure that your Function app is still running.
+
 1. A new browser window should be open with the app.
 1. Click the `Use this sample` button in the middle of the screen to try the app sample:
 ![Use this sample button](./images/app_use_this_sample.png).

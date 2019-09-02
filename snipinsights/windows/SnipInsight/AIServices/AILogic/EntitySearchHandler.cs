@@ -21,9 +21,8 @@ namespace SnipInsight.AIServices.AILogic
         /// <param name="key"> API key for Bing Entity Search </param>
         public EntitySearchHandler(string keyFile): base(keyFile)
         {
-      Host = UserSettings.GetKey(keyFile + "Endpoint", "API.cognitive.microsoft.com/bing/v7.0");
-          Endpoint = "entities";
-    }
+            //<add-endpoint-details-here>
+        }
 
         /// <summary>
         /// Returns the result of the API call

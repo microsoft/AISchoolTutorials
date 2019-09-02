@@ -15,10 +15,8 @@ using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
 using Sketch2Code.Core.BoxGeometry;
 using Microsoft.Extensions.Logging;
-using Microsoft.ApplicationInsights;
-using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models;
-using System.Diagnostics;
-using Microsoft.ProjectOxford.Vision.Contract;
+using Sketch2Code.AI.Entities;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 
 namespace Sketch2Code.Core
 {
@@ -35,13 +33,16 @@ namespace Sketch2Code.Core
             var account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AzureWebJobsStorage"]);
             _cloudBlobClient = account.CreateCloudBlobClient();
         }
+
         public ObjectDetectionAppService() : this(new ObjectDetector(),
             new LoggerFactory().CreateLogger<ObjectDetectionAppService>())
         {
         }
+
         public ObjectDetectionAppService(ILogger logger) : this(new ObjectDetector(), logger)
         {
         }
+
         public async Task<IList<PredictedObject>> GetPredictionAsync(byte[] data)
         {
             throw new NotImplementedException();
@@ -54,39 +55,28 @@ namespace Sketch2Code.Core
             predictions.RemoveAll(p => p.Probability < (Probability / 100D));
         }
 
-        private async Task assignPredictedText(PredictedObject predictedObject)
-        {
-            //Exclude images from non predictable classes
-            var nonPredictableClasses = new string[] { Controls.Image, Controls.Paragraph, Controls.TextBox };
-
-            bool okHeight = predictedObject.BoundingBox.Height <= 3200 && predictedObject.BoundingBox.Height >= 40;
-            bool okWidth = predictedObject.BoundingBox.Width <= 3200 && predictedObject.BoundingBox.Width >= 40;
-            bool predictable = !nonPredictableClasses.Contains(predictedObject.ClassName);
-
-            if (okHeight && okWidth && predictable)
-            {
-                var result = await this._detectorClient.GetText(predictedObject.SlicedImage);
-                predictedObject.Text = result;
-                await Task.Delay(Convert.ToInt32(ConfigurationManager.AppSettings["ComputerVisionDelay"]));
-            }
-        }
-
-        private void assignPredictedText2(PredictedObject predictedObject, HandwritingTextLine[] textLines)
+        private void assignPredictedText(PredictedObject predictedObject, List<Line> textLines)
         {
             predictedObject.Text = new List<string>();
 
-            for (int i = 0; i < textLines.Length; i++)
+            foreach (var textLine in textLines)
             {
                 //if areas are 100% overlapping assign every textline
                 Overlap ovl = new Overlap();
                 Entities.BoundingBox b = new Entities.BoundingBox();
 
+                // Bounding box of a recognized region, line, or word, depending on the parent object.
+                // It's an arrary of eight numbers represent the four points (x-coordinate, y-coordinate
+                // from the left-top corner of the image) of the detected rectangle from the left-top corner
+                // in the clockwise direction.
+                var xPoints = textLine.BoundingBox.Where((value, index) => index % 2 == 0).ToArray();
+                var yPoints = textLine.BoundingBox.Where((value, index) => index % 2 != 0).ToArray();
 
-                int min_x = textLines[i].Polygon.Points.Min(p => p.X);
-                int min_y = textLines[i].Polygon.Points.Min(p => p.Y);
+                var min_x = xPoints.Min();
+                var min_y = yPoints.Min();
 
-                int max_x = textLines[i].Polygon.Points.Max(p => p.X);
-                int max_y = textLines[i].Polygon.Points.Max(p => p.Y);
+                var max_x = xPoints.Max();
+                var max_y = yPoints.Max();
 
                 b.Left = min_x;
                 b.Top = min_y;
@@ -96,9 +86,9 @@ namespace Sketch2Code.Core
                 //If boxes overlaps more than 50% we decide they are the same thing
                 if (ovl.OverlapArea(predictedObject.BoundingBox, b) > 0.5)
                 {
-                    for(int j = 0; j < textLines[i].Words.Length; j++)
+                    for(int j = 0; j < textLine.Words.Count; j++)
                     { 
-                        predictedObject.Text.Add(textLines[i].Words[j].Text);
+                        predictedObject.Text.Add(textLine.Words[j].Text);
                     }
                 }
             }
@@ -173,6 +163,7 @@ namespace Sketch2Code.Core
                 await this.SaveResults(result.SlicedImage, slices_container, $"{result.Name}.png");
             }
         }
+
         public async Task SaveResults(byte[] file, string container, string fileName)
         {
             CloudBlobContainer theContainer = null;
@@ -224,6 +215,7 @@ namespace Sketch2Code.Core
             var blob = theContainer.GetBlockBlobReference(fileName);
             await blob.UploadTextAsync(html);
         }
+
         public async Task<PredictionDetail> GetPredictionAsync(string folderId)
         {
             if (String.IsNullOrWhiteSpace(folderId))
@@ -269,12 +261,14 @@ namespace Sketch2Code.Core
                 return ms.ToArray();
             }
         }
+
         public async Task<T> GetFile<T>(string container, string file)
         {
             var data = await this.GetFile(container, file);
             if (data == null) return default(T);
             return JsonConvert.DeserializeObject<T>(Encoding.UTF8.GetString(data));
         }
+
         public async Task<GroupBox> CreateGroupBoxAsync(IList<PredictedObject> predictedObjects)
         {
             var result = await Task.Run(() =>
