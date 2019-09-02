@@ -13,6 +13,7 @@ In this lab, we will be adding each service individually to observe how simple i
   <img width="560" height="300" src="./Images/SnipInsights_Content_Image.jpg">
 </p>
 
+ 
 
 ## Prerequisites
  * Universal Windows Platform (UWP)
@@ -767,6 +768,7 @@ The Azure Content Moderator API is a cognitive service that checks text, image, 
 1. Click stop on the toolbar within Visual Studio to stop debugging.
 
     > NOTE: You can place a breakpoint in the code at any of the API calls to inspect the raw results.
+
 
 By implementing a range of Azure Cognitive Services, we are easily able to extend our applications to consume AI functionality via simple REST calls. Snip Insights shows how these services can work together to enhance the capability of a solution with minimal effort compared to traditional AI implementations. 
 

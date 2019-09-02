@@ -670,10 +670,5 @@ namespace SnipInsight.Views
                 this.DragMove();
             }
         }
-
-    private void Capture_Click(object sender, RoutedEventArgs e)
-    {
-
     }
-  }
 }

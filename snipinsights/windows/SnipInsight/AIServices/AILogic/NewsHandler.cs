@@ -18,9 +18,8 @@ namespace SnipInsight.AIServices.AILogic
         /// <param name="key"> API key for Bing News Search </param>
         public NewsHandler(string keyFile): base(keyFile)
         {
-      Host = UserSettings.GetKey(keyFile + "Endpoint", "API.cognitive.microsoft.com/bing/v7.0");
-          Endpoint = "news/search";
-    }
+            //<add-endpoint-details-here>
+        }
 
         /// <summary>
         /// Returns the result of the API call
@@ -53,10 +52,9 @@ namespace SnipInsight.AIServices.AILogic
         /// <returns>The HttpResponseMessage containing the Json result</returns>
         protected async Task<HttpResponseMessage> Run(string entityName)
         {
-      RequestParams = "q=" + System.Net.WebUtility.UrlEncode(entityName);
-          BuildURI();
+            //<add-endpoint-params-here>
 
-      HttpResponseMessage response = null;
+            HttpResponseMessage response = null;
             // Execute the REST API GET call asynchronously and
             // await for non-blocking API call to Bing Entity Search
             response = await RequestAndRetry(() => CloudServiceClient.GetAsync(URI));
