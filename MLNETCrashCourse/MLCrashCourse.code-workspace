@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "00.CompleteExamples"
+		},
+		{
+			"path": "01.IntroductionToMLNET"
+		},
+		{
+			"path": "02.LinearRegression"
+		},
+		{
+			"path": "03.MultipleLinearRegression"
+		},
+		{
+			"path": "04.PolynomialRegression"
+		},
+		{
+			"path": "05.LogisticRegression"
+		},
+		{
+			"path": "06.SupportVectorMachines"
+		},
+		{
+			"path": "Common"
+		}
+	]
+}
