@@ -65,7 +65,7 @@ The Deep Learning Virtual Machine is a specially configured variant of the [Data
 1. Click **Create Resource [+]**  from the left menu and search for `Deep Learning Virtual Machine`.
 1. Select the first result and click the **Create** button.
 1. Provide the required information:
-    * Name: `ai-labs-styletransfer-<your initials>`.
+    * Name: `ai-labs-st-<your initials>`.
     * OS Type: `Linux`.
     * Set the username and password.
       > NOTE: keep these credentials in a Notepad as we'll need them later to connect to the VM.
@@ -76,14 +76,14 @@ The Deep Learning Virtual Machine is a specially configured variant of the [Data
         > Note: for this lab we'll use a Deep Learning VM which requires NC class machines that are only available in EAST US, NORTH CENTRAL US, SOUTH CENTRAL US, and WEST US 2.
         
 1. Click **OK** to continue with the **Settings** section.
-1. Select `NC6` for the VM size.
+1. Make sure `1x Standard NC6` is selected for the VM size.
 1. Continue until the last section **Buy**.
 1. Click **Create** to start the provisioning.
    > NOTE: a link is provided to the terms of the transaction. The VM does not have any additional charges beyond the compute for the server size you chose in the size step.
 
 1. The provisioning should take about 10 minutes. The status of the provisioning is displayed int the Azure portal.
 1. Once provisioning is complete, you will see a **Deployment succeeded** notification.
-1. Go to **All Resources** in the left pane and search for the new resource: `ai-labs-styletransfer-<your initials>`.
+1. Go to **All Resources** in the left pane and search for the new resource: `ai-labs-st-<your initials>`.
 1. Click on the first result to open it.
 1. Copy the `Public IP address` into Notepad.
    > NOTE: we'll need this value later on to connect to the VM.
@@ -104,7 +104,8 @@ Follow the following steps to download the sample code provided for this lab. It
     * After that, you'll be prompted for your password. Type the one you used during the DLVM setup.
 
 1. You should see a welcome message in your terminal indicating that you have successfully connected to the DLVM.
-1. Clone this repo to your VM using the command `git clone <repository url> styletransfer-lab`.
+1. Clone this repo to your VM using the command `git clone https://github.com/microsoft/AISchoolTutorials ai-school-tutorials`.
+1. Copy the following command to move the lab content to `<your home>\styletransfer-lab`: `mv ai-school-tutorials/style-transfer ./styletransfer-lab`
     > ALERT: make sure to put your code into `<your home>\styletransfer-lab`.
 
 ### B) Download the images dataset
@@ -116,6 +117,8 @@ After connecting to the DLVM, you'll need to download the images dataset for tra
 
 1. Enter the following commands to download the images from Google Cloud Storage:
     * Install **gsutil**: `curl https://sdk.cloud.google.com | bash`
+    * Make sure to add **gsutil** to the system *PATH* when prompted. Use the default *bashrc* file.
+    * Type the following command to apply the changes in the *.bashrc* file: `source ~/.bashrc`
     * Download the images: `gsutil -m rsync gs://images.cocodataset.org/train2014 data/train`
         > NOTE: this process might take a few minutes as it will download ˜12.6GB of data.
 
@@ -129,10 +132,7 @@ After connecting to the DLVM, you'll need to download the images dataset for tra
 
 Create the TensorFlow model using the previously downloaded images.
 
-1. Execute the following command to create some directories that we'll need during the training: `mkdir output && mkdir log`.
-    > ALERT: make sure you are still in the training folder before running commands `styletransfer-lab/Training/StyleTransferTraining`
-
-1. Once you have created the folders, navigate to the **src** folder: `cd src`.
+1. Navigate to the **src** folder: `cd src`.
 1. Run the training script: `python train.py --input_dir ../data --output_dir ../output --log_dir ../log --gpu_id 0 --batch_size 16`
    > ALERT: the training lasts for about 4 hours, so consider using a tool like [screen](https://linuxize.com/post/how-to-use-linux-screen/) so you can keep your process running if the ssh connection fails.
 
@@ -225,7 +225,7 @@ The code base comes with a pre-built Web App and an API that applies the model t
     * Paste the following code snippet after the comment `Create pipeline to execute our model`:
 
     ```csharp
-    var pipeline = _mlContext.Transforms.ScoreTensorFlowModel(ModelLocation, new[] { "add_37" }, new[] { "Placeholder" });
+    var pipeline = _mlContext.Transforms.ScoreTensorFlowModel(ImageConstants.ModelLocation, new[] { "add_37" }, new[] { "Placeholder" });
     ```
 
     > NOTE: this pipeline is only composed by a **TensorFlowEstimator**. This is just enough to get a prediction from our TensorFlow model. Notice the *input* and *output* columns are explicitly specified. You can get that info by opening the saved model in a tool like [Netron](https://github.com/lutzroeder/Netron).
@@ -239,6 +239,8 @@ The code base comes with a pre-built Web App and an API that applies the model t
     // Execute prediction
     var predictionsEngine = model.CreatePredictionEngine<TensorInput, TensorOutput>(_mlContext);
     var results = predictionsEngine.Predict(data[0]);
+
+    return ProcessResult(results);
     ```
     > NOTE: here we apply the new style to the input pixels and return the transformed pixels in the prediction result.
 
@@ -267,7 +269,7 @@ See how to get predictions from the previous models to transform the images usin
 
 Let's update the Prediction method to use a more complex pipeline. ML.NET has a range of components that can make working with data easier.
 
-1. Return to **VS Code**.
+1. Return to **VS Code** and click on the **Stop** button (Shift+F5).
 1. Open the `Predictor.cs` file.
 1. Find the method `RunPrediction` and modify the following lines:
     * Replace the *4 lines* of code below the comment `Prepare input data` with the following code snippet:
