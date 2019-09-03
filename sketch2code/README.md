@@ -205,7 +205,7 @@ In this section we will see how to code a solution to make predictions using the
           "ObjectDetectionApiKey": "CognitiveServiceKey",
           "ObjectDetectionProjectName": "CustomVisionProjectName",
           "ObjectDetectionPublishedModelName": "ObjectDetectionPublishedModelName",
-          "AzureWebJobsStorage": "AzureWebJobsStorage"
+          "AzureWebJobsStorage": "AzureWebJobsStorageConnectionString"
       }
     }
     ```
