@@ -21,10 +21,22 @@ namespace StyleTransfer.Web.Services
         public string RunPrediction(string base64Image)
         {
             // Prepare input data
+            var resizedImage = ImageUtils.ResizeImage(base64Image);
+            var pixels = ImageUtils.ExtractPixels(resizedImage);
+            var data = new[] { new TensorInput { Placeholder = pixels } };
+            var dataView = _mlContext.Data.LoadFromEnumerable(data);
 
             // Create pipeline to execute our model
+            var pipeline = _mlContext.Transforms.ScoreTensorFlowModel(ImageConstants.ModelLocation, new[] { "add_37" }, new[] { "Placeholder" });
 
-            return null;
+            // Put the data in the pipeline to get a Transformer
+            var model = pipeline.Fit(dataView);
+
+            // Execute prediction
+            var predictionsEngine = model.CreatePredictionEngine<TensorInput, TensorOutput>(_mlContext);
+            var results = predictionsEngine.Predict(data[0]);
+
+            return ProcessResult(results);
         }
 
         /// <summary>Method that builds a new bitmap image based on the prediction output result</summary>
