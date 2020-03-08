@@ -16,7 +16,7 @@ If you are going to use Visual Studio Code you will need to follow these steps. 
 
 #### Visual Studio Code - C# Extension
 
-To debug a .NET Core application you will need to install the [C# extension for vscode](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) by [clicking here](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) and clicking on **Install**. 
+To debug a .NET Core application you will need to install the [C# extension for vscode](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) by [clicking here](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) and clicking on **Install**.
 
 #### .NET Core SDK
 
