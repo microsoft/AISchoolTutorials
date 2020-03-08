@@ -49,7 +49,7 @@ If you need a new Azure subscription, then there are a couple of options to get 
 We'll use VS Code to test our model using ML.NET. Install VS Code along the following packages in your local environment to run the sample project.
 
 1. Download Visual Studio Code from [https://code.visualstudio.com/download](https://code.visualstudio.com/download).
-1. Install the [C# Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp).
+1. Install the [C# Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp).
 
 You will also require the following libraries in order to run the code:
 
